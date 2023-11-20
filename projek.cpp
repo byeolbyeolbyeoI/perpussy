@@ -35,7 +35,8 @@ struct Mahasiswa {
 bool login(string username,string password){
     string u,p;
     ifstream login("admin.txt");
-    while(login >> u >> p){
+    while(  getline(login, u) &&
+            getline(login, p)){
         if(username == u && password == p){
             return true;
         }
@@ -256,7 +257,7 @@ int main(){
         }
     }while(true);
 
-    int menu;
+    int menu; //debug
     do{
         system("cls");
         cout << "Menu\n[1]. Lihat Daftar Buku\n[2]. Input Buku\n[3]. Edit Buku\n[4]. Peminjaman\nPilih : ";
