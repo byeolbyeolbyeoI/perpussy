@@ -4,12 +4,19 @@
 
 using namespace std;
 
-struct pengelola {
+struct Menu {
+    int menu;
+    int count;
+    int count2;
+    int count3;
+};
+
+struct Pengelola {
     string username;
     string password;
 };
 
-struct buku {
+struct Buku {
     string id; // format AA01
     string judul;
     string genre;
@@ -19,7 +26,7 @@ struct buku {
     string status;
 };
 
-struct mahasiswa {
+struct Mahasiswa {
     string nim;
     string prodi;
     string status;
@@ -42,108 +49,111 @@ void daftar(){
     cout << "daftar buku\n";
     ifstream daftar("buku.txt");
 
-    struct buku i;
+    struct Buku Daftar;
 
     while(
-        getline(daftar, i.id)         &&
-        getline(daftar, i.judul)      &&
-        getline(daftar, i.genre)      &&
-        getline(daftar, i.penulis)    &&
-        getline(daftar, i.penerbit)   &&
-        getline(daftar, i.tahun)      &&
-        getline(daftar, i.status)
+        getline(daftar, Daftar.id)         &&
+        getline(daftar, Daftar.judul)      &&
+        getline(daftar, Daftar.genre)      &&
+        getline(daftar, Daftar.penulis)    &&
+        getline(daftar, Daftar.penerbit)   &&
+        getline(daftar, Daftar.tahun)      &&
+        getline(daftar, Daftar.status)
     ){
-        cout << "ID\t\t: " << i.id << endl;
-        cout << "Judul\t\t: " << i.judul << endl;
-        cout << "Genre\t\t: " << i.genre << endl;
-        cout << "Penulis\t\t: " << i.penulis << endl;
-        cout << "Penerbit\t: " << i.penerbit << endl;
-        cout << "Tahun Terbit\t\t: " << i.tahun << endl;
-        cout << "Status\t\t: " << i.status << endl;
+        cout << "ID\t\t: " << Daftar.id << endl;
+        cout << "Judul\t\t: " << Daftar.judul << endl;
+        cout << "Genre\t\t: " << Daftar.genre << endl;
+        cout << "Penulis\t\t: " << Daftar.penulis << endl;
+        cout << "Penerbit\t: " << Daftar.penerbit << endl;
+        cout << "Tahun Terbit\t: " << Daftar.tahun << endl;
+        cout << "Status\t\t: " << Daftar.status << endl;
         cout << "=====================" << endl;
     }
+    cout << "\ntekan tombol apapun untuk melanjutkan";
+    getch();
+    cin.ignore();
 }
 
 
 void input(){
-    struct buku c;
-    struct buku b;
+    struct Buku Input;
+    struct Buku I;
+    struct Menu I1;
     cin.ignore();
-    int count = 0;
-    int count2 = 0;
     cout << "input buku\n";
 
     cout << "masukkan data buku\n";
-
+    
     do{
         cout << "id\t\t: ";
-        cin >> b.id;  
+        cin >> I.id; 
         
-        if(b.id.length() > 4){
-            count = 0;
-        }
-        else if(b.id.length() == 0){
-            count = 0;
+        if(I.id.length() > 4){
+            cout << "id harus 4 digit tanpa spasi\n";
+            I1.count = 0;
         }
         else{
-            count = 1;
+            cout << "masuk sini";
+            I1.count = 1;
         }
 
-        if(count == 1){
+        if(I1.count == 1){
             ifstream cek("buku.txt");
-            
+
             while(
-                getline(cek, c.id)         &&
-                getline(cek, c.judul)      &&
-                getline(cek, c.genre)      &&
-                getline(cek, c.penulis)    &&
-                getline(cek, c.penerbit)   &&
-                getline(cek, c.tahun)      &&
-                getline(cek, c.status)
+                getline(cek, Input.id)         &&
+                getline(cek, Input.judul)      &&
+                getline(cek, Input.genre)      &&
+                getline(cek, Input.penulis)    &&
+                getline(cek, Input.penerbit)   &&
+                getline(cek, Input.tahun)      &&
+                getline(cek, Input.status)
             ){
-                if(c.id == b.id){
+                cout << "masuk sini ga";
+                if(Input.id == I.id){
                     cout << "id sudah ada, isi dengan id yang lain!\n";
-                    count2 = 0;
+                    I1.count2 = 0;
                     break;
                 }
                 else{
-                    count2 = 1;
-                    break;
+                    cout << "masuk sini ga";
+                    I1.count2 = 1;
                 }
-            }
-
-            if(count2 == 1){
-                break;
-            }
-            else{
-                continue;
             }
         }
         else{
             continue;
         }
+
+        if(I1.count2 == 1){
+                break;
+        }
+        else{
+            continue;
+        }
+
     }while(true);
     
     cin.ignore();
     cout << "judul\t\t: ";
-    getline(cin, b.judul);
+    getline(cin, I.judul);
 
     cout << "genre\t\t: ";
-    getline(cin, b.genre);
+    getline(cin, I.genre);
 
     cout << "penulis\t\t: ";
-    getline(cin, b.penulis);
+    getline(cin, I.penulis);
 
     cout << "penerbit\t: ";
-    getline(cin, b.penerbit);
+    getline(cin, I.penerbit);
 
     cout << "tahun\t\t: ";
-    getline(cin, b.tahun);
+    getline(cin, I.tahun);
 
     ofstream input("buku.txt", ios::app);
     
     if(input.is_open()){
-        input << b.id << endl << b.judul << endl << b.genre << endl << b.penulis << endl << b.penerbit << endl << b.tahun << endl << "Siap" << endl;
+        input << I.id << endl << I.judul << endl << I.genre << endl << I.penulis << endl << I.penerbit << endl << I.tahun << endl << "Siap" << endl;
         cout << "data buku berhasil di unggah\n";
         cout << "tekan tombol apapun untuk melanjutkan...\n";
         getch();
@@ -155,23 +165,89 @@ void input(){
 }
 
 void edit(){
+    struct Menu E1;
+    struct Buku Edit;
+    struct Buku E;
+    string id;
 
+    E1.count = 0;
+
+    cout << "id buku yang ingin diedit : ";
+    cin >> id;
+    ifstream edit("buku.txt");
+
+    while(
+        getline(edit, Edit.id)         &&
+        getline(edit, Edit.judul)      &&
+        getline(edit, Edit.genre)      &&
+        getline(edit, Edit.penulis)    &&
+        getline(edit, Edit.penerbit)   &&
+        getline(edit, Edit.tahun)      &&
+        getline(edit, Edit.status)
+    ){
+        if(id == Edit.id){
+            cout << "pilih yang ingin anda edit (id dan status buku tidak dapat diedit) : \n";
+            cin >> E1.menu;
+            cin.ignore();
+            switch(E1.menu){
+                case 1 :
+                    cout << "id buku tidak dapat diedit, pilih opsi yang lain\n";
+                    E1.count = 1;
+                    break;
+                case 2 :
+                    cout << "masukkan judul yang baru : ";
+                    getline(cin, E.judul);
+                    Edit.judul = E.judul;
+                    break;
+                case 3 :
+                    cout << "masukkan genre yang baru : ";
+                    getline(cin, E.genre);
+                    Edit.genre = E.genre;
+                    break;
+                case 4 :
+                    cout << "masukkan penulis yang baru : ";
+                    getline(cin, E.penulis);
+                    Edit.penulis = E.penulis;
+                    break;
+                case 5 :
+                    cout << "masukkan penerbit yang baru : ";
+                    getline(cin, E.penerbit);
+                    Edit.penerbit = E.penerbit;
+                    break;
+                case 6 :
+                    cout << "masukkan tahun terbit yang baru : ";
+                    getline(cin, E.tahun);
+                    Edit.tahun = E.tahun;
+                    break;
+                case 7 :
+                    cout << "status buku tidak dapat diedit, pilih opsi lain\n";
+                    E1.count = 1;
+                    break;
+                default :
+                    cout << "input tidak valid, pilih opsi lain\n";
+                    E1.count = 1;
+                    break;
+            }
+            ofstream baru("buku2.txt", ios::app);
+            baru << Edit.id << endl << Edit.judul << endl << Edit.genre << endl << Edit.penulis << endl << Edit.penerbit << endl << Edit.tahun << endl << "Siap" << endl;
+        }
+    }
 }
 
 void pinjam(){
 
 }
 int main(){
-    struct pengelola a; 
+    struct Pengelola A; 
     
     do{
         cout << "username : ";
-        cin >> a.username;
+        cin >> A.username;
 
         cout << "password : ";
-        cin >> a.password;
-        if (login(a.username, a.password) == true){
-            cout << "selamat datang " << a.username << " di program perpus merdeka";
+        cin >> A.password;
+        if (login(A.username, A.password) == true){
+            cout << "selamat datang " << A.username << " di program perpus merdeka";
             break;
         }
         else{
