@@ -100,7 +100,7 @@ void input(){
         if(I1.count == 1){
             ifstream cek("buku.txt");
 
-            while(
+            while(a
                 getline(cek, Input.id)         &&
                 getline(cek, Input.judul)      &&
                 getline(cek, Input.genre)      &&
