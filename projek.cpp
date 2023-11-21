@@ -35,17 +35,16 @@ struct Mahasiswa {
 bool login(string username,string password){
     string u,p;
     ifstream login("admin.txt");
-    while(  getline(login, u) &&
-            getline(login, p)){
+    while(getline(login, u) &&
+         getline(login, p))
+    {   
         if(username == u && password == p){
             return true;
         }
-        else{
-            return false;
-        }
     }
+    return false;
 };
-
+ 
 void daftar(){
     cout << "daftar buku\n";
     ifstream daftar("buku.txt");
@@ -76,11 +75,17 @@ void daftar(){
 }
 
 
-void input(){
+void input(){ 
     struct Buku Input;
     struct Buku I;
     struct Menu I1;
     cin.ignore();
+    
+
+    I1.count = 0;
+    I1.count2 = 0;
+    I1.count3 = 0;
+
     cout << "input buku\n";
 
     cout << "masukkan data buku\n";
@@ -88,38 +93,73 @@ void input(){
     do{
         cout << "id\t\t: ";
         cin >> I.id; 
-        
-        if(I.id.length() > 4){
-            cout << "id harus 4 digit tanpa spasi\n";
-            I1.count = 0;
+
+        if(I.id.length() == 4){
+            I1.count = 1;
         }
         else{
-            cout << "masuk sini";
-            I1.count = 1;
+            cout << "id harus 4 digit tanpa spasi\n";
+            I1.count = 0;   
         }
 
         if(I1.count == 1){
-            ifstream cek("buku.txt");
 
-            while(a
-                getline(cek, Input.id)         &&
-                getline(cek, Input.judul)      &&
-                getline(cek, Input.genre)      &&
-                getline(cek, Input.penulis)    &&
-                getline(cek, Input.penerbit)   &&
-                getline(cek, Input.tahun)      &&
-                getline(cek, Input.status)
-            ){
-                cout << "masuk sini ga";
-                if(Input.id == I.id){
-                    cout << "id sudah ada, isi dengan id yang lain!\n";
-                    I1.count2 = 0;
-                    break;
+            ifstream cek("buku.txt");
+            if(cek.is_open()){
+
+                while(  
+                    getline(cek, Input.id)         &&
+                    getline(cek, Input.judul)      &&
+                    getline(cek, Input.genre)      &&
+                    getline(cek, Input.penulis)    &&
+                    getline(cek, Input.penerbit)   &&
+                    getline(cek, Input.tahun)      &&
+                    getline(cek, Input.status)
+                ){
+                    if(Input.id == I.id){
+                        cout << "id sudah ada, isi dengan id yang lain!\n";
+                        I1.count2 = 0;
+                        break;
+
+                    }
+                    else{
+                        cout << "id tersedia, silahkan lengkapi data yang lain\n";
+                        I1.count2 = 1;
+                        break;
+                    }
+                }
+                
+            }
+            else{
+                I1.count3 = 1;
+                cin.ignore();
+                cout << "judul\t\t: ";
+                getline(cin, I.judul);
+
+                cout << "genre\t\t: ";
+                getline(cin, I.genre);
+
+                cout << "penulis\t\t: ";
+                getline(cin, I.penulis);
+
+                cout << "penerbit\t: ";
+                getline(cin, I.penerbit);
+
+                cout << "tahun\t\t: ";
+                getline(cin, I.tahun);
+
+                ofstream input("buku.txt", ios::app);
+                
+                if(input.is_open()){
+                    input << I.id << endl << I.judul << endl << I.genre << endl << I.penulis << endl << I.penerbit << endl << I.tahun << endl << "Siap" << endl;
+                    cout << "data buku berhasil di unggah\n";
+                    cout << "tekan tombol apapun untuk melanjutkan...\n";
+                    getch();
                 }
                 else{
-                    cout << "masuk sini ga";
-                    I1.count2 = 1;
+                    cout << "file tidak dapat dibuka\n";
                 }
+                break;
             }
         }
         else{
@@ -127,42 +167,44 @@ void input(){
         }
 
         if(I1.count2 == 1){
-                break;
+            break;
         }
-        else{
+        else if(I1.count2 = 0){
             continue;
         }
 
     }while(true);
     
-    cin.ignore();
-    cout << "judul\t\t: ";
-    getline(cin, I.judul);
+    if(I1.count3 != 1){
+        cin.ignore();
+        cout << "judul\t\t: ";
+        getline(cin, I.judul);
 
-    cout << "genre\t\t: ";
-    getline(cin, I.genre);
+        cout << "genre\t\t: ";
+        getline(cin, I.genre);
 
-    cout << "penulis\t\t: ";
-    getline(cin, I.penulis);
+        cout << "penulis\t\t: ";
+        getline(cin, I.penulis);
 
-    cout << "penerbit\t: ";
-    getline(cin, I.penerbit);
+        cout << "penerbit\t: ";
+        getline(cin, I.penerbit);
 
-    cout << "tahun\t\t: ";
-    getline(cin, I.tahun);
+        cout << "tahun\t\t: ";
+        getline(cin, I.tahun);
 
-    ofstream input("buku.txt", ios::app);
+        ofstream input("buku.txt", ios::app);
+        
+        if(input.is_open()){
+            input << I.id << endl << I.judul << endl << I.genre << endl << I.penulis << endl << I.penerbit << endl << I.tahun << endl << "Siap" << endl;
+            cout << "data buku berhasil di unggah\n";
+            cout << "tekan tombol apapun untuk melanjutkan...\n";
+            getch();
+        }
+        else{
+            cout << "file tidak dapat dibuka\n";
+        }
+    }
     
-    if(input.is_open()){
-        input << I.id << endl << I.judul << endl << I.genre << endl << I.penulis << endl << I.penerbit << endl << I.tahun << endl << "Siap" << endl;
-        cout << "data buku berhasil di unggah\n";
-        cout << "tekan tombol apapun untuk melanjutkan...\n";
-        getch();
-    }
-    else{
-        cout << "file tidak dapat dibuka\n";
-    }
-
 }
 
 void edit(){
@@ -176,7 +218,9 @@ void edit(){
     cout << "id buku yang ingin diedit : ";
     cin >> id;
     ifstream edit("buku.txt");
+    ofstream baru("buku2.txt", ios::app);
 
+    //if file good
     while(
         getline(edit, Edit.id)         &&
         getline(edit, Edit.judul)      &&
@@ -187,52 +231,67 @@ void edit(){
         getline(edit, Edit.status)
     ){
         if(id == Edit.id){
-            cout << "pilih yang ingin anda edit (id dan status buku tidak dapat diedit) : \n";
-            cin >> E1.menu;
-            cin.ignore();
-            switch(E1.menu){
-                case 1 :
-                    cout << "id buku tidak dapat diedit, pilih opsi yang lain\n";
-                    E1.count = 1;
+            do{
+                cout << "pilih yang ingin anda edit (id dan status buku tidak dapat diedit) : \n";
+                cin >> E1.menu;
+                cin.ignore();
+                switch(E1.menu){
+                    case 1 :
+                        cout << "id buku tidak dapat diedit, pilih opsi yang lain\n";
+                        getch();
+                        break;
+                    case 2 :
+                        cout << "masukkan judul yang baru : ";
+                        getline(cin, E.judul);
+                        Edit.judul = E.judul;
+                        E1.count = 1;
+                        break;
+                    case 3 :
+                        cout << "masukkan genre yang baru : ";
+                        getline(cin, E.genre);
+                        Edit.genre = E.genre;
+                        E1.count = 1;
+                        break;
+                    case 4 :
+                        cout << "masukkan penulis yang baru : ";
+                        getline(cin, E.penulis);
+                        Edit.penulis = E.penulis;
+                        E1.count = 1;
+                        break;
+                    case 5 :
+                        cout << "masukkan penerbit yang baru : ";
+                        getline(cin, E.penerbit);
+                        Edit.penerbit = E.penerbit;
+                        E1.count = 1;
+                        break;
+                    case 6 :
+                        cout << "masukkan tahun terbit yang baru : ";
+                        getline(cin, E.tahun);
+                        Edit.tahun = E.tahun;
+                        E1.count = 1;
+                        break;
+                    case 7 :
+                        cout << "status buku tidak dapat diedit, pilih opsi lain\n";
+                        getch();
+                        break;
+                    default :
+                        cout << "input tidak valid, pilih opsi lain\n";
+                        break;   
+                }
+                if(E1.count == 1){
                     break;
-                case 2 :
-                    cout << "masukkan judul yang baru : ";
-                    getline(cin, E.judul);
-                    Edit.judul = E.judul;
-                    break;
-                case 3 :
-                    cout << "masukkan genre yang baru : ";
-                    getline(cin, E.genre);
-                    Edit.genre = E.genre;
-                    break;
-                case 4 :
-                    cout << "masukkan penulis yang baru : ";
-                    getline(cin, E.penulis);
-                    Edit.penulis = E.penulis;
-                    break;
-                case 5 :
-                    cout << "masukkan penerbit yang baru : ";
-                    getline(cin, E.penerbit);
-                    Edit.penerbit = E.penerbit;
-                    break;
-                case 6 :
-                    cout << "masukkan tahun terbit yang baru : ";
-                    getline(cin, E.tahun);
-                    Edit.tahun = E.tahun;
-                    break;
-                case 7 :
-                    cout << "status buku tidak dapat diedit, pilih opsi lain\n";
-                    E1.count = 1;
-                    break;
-                default :
-                    cout << "input tidak valid, pilih opsi lain\n";
-                    E1.count = 1;
-                    break;
-            }
-            ofstream baru("buku2.txt", ios::app);
-            baru << Edit.id << endl << Edit.judul << endl << Edit.genre << endl << Edit.penulis << endl << Edit.penerbit << endl << Edit.tahun << endl << "Siap" << endl;
+                }
+            }while(true);
         }
+        
+            baru << Edit.id << endl << Edit.judul << endl << Edit.genre << endl << Edit.penulis << endl << Edit.penerbit << endl << Edit.tahun << endl << "Siap" << endl;
     }
+
+    edit.close();
+    baru.close();
+
+    remove("buku.txt");
+    rename("buku2.txt", "buku.txt");
 }
 
 void pinjam(){
