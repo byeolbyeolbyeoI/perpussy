@@ -2,6 +2,8 @@
 #include <conio.h>
 #include <fstream>
 #include <stdio.h>
+#include <locale>
+#include <cctype>
 
 using namespace std;
 
@@ -10,6 +12,9 @@ struct Menu {
     int count;
     int count2;
     int count3;
+    int count4;
+    int count5;
+    int count6;
 };
 
 struct Pengelola {
@@ -76,23 +81,31 @@ void daftar(){
     cin.ignore();
 }
 
-
 void input(){ 
     struct Buku Input;
     struct Buku I;
     struct Menu I1;
     cin.ignore();
     
-
     I1.count = 0;
     I1.count2 = 0;
     I1.count3 = 0;
+    I1.count4 = 0;
+    I1.count5 = 0;
+    I1.count6 = 0;
 
     cout << "input buku\n";
 
     cout << "masukkan data buku\n";
     
     do{
+        I1.count = 0;
+        I1.count2 = 0;
+        I1.count3 = 0;
+        I1.count4 = 0;
+        I1.count5 = 0;
+        I1.count6 = 0;
+
         cout << "id\t\t: ";
         cin >> I.id; 
 
@@ -102,6 +115,31 @@ void input(){
         else{
             cout << "id harus 4 digit tanpa spasi\n";
             I1.count = 0;   
+        }
+
+        if(I1.count == 1){
+            for(int i = 0; i < 2; i++){
+                if(isupper(I.id[i])){
+                    I1.count5 = 1;
+                }
+                else{
+                    cout << "format id haruslah KAPITAL KAPITAL ANGKA ANGKA\n";
+                    I1.count = 0;
+                    break;
+                }
+            }
+        }
+        if(I1.count5 == 1){
+            for(int j = 2; j < 4; j++){
+                if(isdigit(I.id[j])){
+                    I1.count5 = 1;
+                }
+                else{
+                    cout << "format id haruslah KAPITAL KAPITAL ANGKA ANGKA\n";
+                    I1.count = 0;
+                    break;
+                }
+            }
         }
 
         if(I1.count == 1){
@@ -147,8 +185,37 @@ void input(){
                 cout << "penerbit\t: ";
                 getline(cin, I.penerbit);
 
-                cout << "tahun\t\t: ";
-                getline(cin, I.tahun);
+                I1.count4 = 0;
+
+                do{
+                    cout << "tahun terbit\t: ";
+                    getline(cin, I.tahun);
+
+                    if(I.tahun.length() == 4){
+                        I1.count5 = 1;
+                    }
+                    else{
+                        cout << "tahun terbit harus 4 digit tanpa spasi\n";
+                        I1.count5 = 0;   
+                    }
+
+                    if(I1.count5 == 1){
+                        for(char ch : I.tahun){
+                            if(!isdigit(ch)){
+                                cout << "tahun terbit haruslah angka\n";
+                                I1.count4 = 0;
+                                break;
+                            }
+                            else{
+                                I1.count4 = 1;
+                            }
+                        }
+
+                        if(I1.count4 == 1){
+                            break;
+                        }
+                    }
+                }while(true);
 
                 ofstream input("buku.txt", ios::app);
                 
@@ -191,8 +258,38 @@ void input(){
         cout << "penerbit\t: ";
         getline(cin, I.penerbit);
 
-        cout << "tahun\t\t: ";
-        getline(cin, I.tahun);
+        I1.count4 = 0;
+
+        do{
+            cout << "tahun terbit\t: ";
+            getline(cin, I.tahun);
+
+            if(I.tahun.length() == 4){
+                I1.count5 = 1;
+            }
+            else{
+                cout << "tahun terbit harus 4 digit tanpa spasi\n";
+                I1.count5 = 0;   
+            }
+
+            if(I1.count5 == 1){
+                for(char ch : I.tahun){
+                    if(!isdigit(ch)){
+                        cout << "tahun terbit haruslah angka\n";
+                        I1.count4 = 0;
+                        break;
+                    }
+                    else{
+                        I1.count4 = 1;
+                    }
+                }
+
+                if(I1.count4 == 1){
+                    break;
+                }
+            }
+
+        }while(true);
 
         ofstream input("buku.txt", ios::app);
         
@@ -234,6 +331,23 @@ void edit(){
     ){
         if(id == Edit.id){
             do{
+                /* cout << "[1]. ID" << endl;
+                cout << "[2]. Judul" << endl;
+                cout << "[3]. Genre" << endl;
+                cout << "[4]. Penulis" << endl;
+                cout << "[5]. Penerbit" << endl;
+                cout << "[6]. Tahun Terbit" << endl;
+                cout << "[7]. Status" << endl << endl;
+                */
+
+                cout << "ID\t\t: " << Edit.id << endl;
+                cout << "Judul\t\t: " << Edit.judul << endl;
+                cout << "Genre\t\t: " << Edit.genre << endl;
+                cout << "Penulis\t\t: " << Edit.penulis << endl;
+                cout << "Penerbit\t: " << Edit.penerbit << endl;
+                cout << "Tahun Terbit\t: " << Edit.tahun << endl;
+                cout << "Status\t\t: " << Edit.status << endl;
+
                 cout << "pilih yang ingin anda edit (id dan status buku tidak dapat diedit) : \n";
                 cin >> E1.menu;
                 cin.ignore();
@@ -315,14 +429,17 @@ void pinjam(){
     else{
         pinjam.clear();
         pinjam.seekg(0,ios::beg);
-        
+        string tes;
+
         do{
+            pinjam.seekg(0,ios::beg);
             P.id.clear();
-            cin.ignore();
+            P1.count = 0;
+            P1.count2 = 0;
+            remove("buku3.txt");
             cout << "masukkan id yang ingin dipinjam : ";
             cin >> P.id;
-            cout << P.id;
-
+            
             while(
                 getline(pinjam, Pinjam.id)         &&
                 getline(pinjam, Pinjam.judul)      &&
@@ -351,7 +468,7 @@ void pinjam(){
                                 if(M.nim == Mahasiswa.nim){
                                     string oleh = "Dipinjam oleh ";
                                     Pinjam.status = oleh.append(Mahasiswa.nama);
-                                    cout << Pinjam.status;
+                                    cout << Pinjam.status << endl;
                                     P1.count = 1;
                                     break;
                                 }
@@ -364,13 +481,9 @@ void pinjam(){
                     else{
                         cout << "Buku sudah dipinjam, pilih buku lain\n";
                         P1.count2 = 1;
-                        break;
-                    }
-                    if(P1.count2 == 1){
-                        break;
                     }
                 }
-                cout << "SAMPE SINI";
+                // ga ada di loop pertama
                 if(P1.count2 == 1){
                     break;
                 }
@@ -411,9 +524,8 @@ void kembali(){
         do{
             K.id.clear();
             cin.ignore();
-            cout << "masukkan id yang ingin dipinjam : ";
+            cout << "masukkan id yang ingin dikembalikan : ";
             cin >> K.id;
-            cout << K.id;
 
             while(
                 getline(kembali, Kembali.id)         &&
@@ -425,44 +537,16 @@ void kembali(){
                 getline(kembali, Kembali.status)   
             )
             {
-                cout << "ga masuk sini";
                 if(K.id == Kembali.id){
-                    if(Kembali.status == "Siap"){
-                        cout << "Buku tersedia!\n";
-                        do{
-                            cout << "masukkan nim peminjam : ";
-                            cin >> M.nim;
-
-                            ifstream k("mahasiswa.txt");
-                            while(
-                                getline(k, Mahasiswa.nim)       &&
-                                getline(k, Mahasiswa.nama)      &&
-                                getline(k, Mahasiswa.prodi)     &&
-                                getline(k, Mahasiswa.status)
-                            )
-                            {
-                                if(M.nim == Mahasiswa.nim){
-                                    string oleh = "Dipinjam oleh ";
-                                    Kembali.status = oleh.append(Mahasiswa.nama);
-                                    cout << Kembali.status;
-                                    K1.count = 1;
-                                    break;
-                                }
-                            }
-                            if(K1.count == 1){
-                                break;
-                            }
-                        }while(true);
-                        cout << "masuk sini kah";
+                    if(Kembali.status[0] == 'D'){
+                        Kembali.status = "Siap";
+                        
+                        cout << "Buku berhasil dikembalikan\n";
+                        K1.count = 1;
                     }
-                    else{
-                        cout << "Buku sudah dipinjam, pilih buku lain\n";
+                    else if(Kembali.status == "Siap"){
+                        cout << "Buku tidak sedang dipinjam\n";
                         K1.count2 = 1;
-                        break;
-                    }
-                    cout << "masuk sini?";
-                    if(K1.count2 == 1){
-                        break;
                     }
                 }
                 if(K1.count2 == 1){
@@ -471,6 +555,9 @@ void kembali(){
                 ofstream kembali2("buku3.txt", ios::app);
                 kembali2 << Kembali.id << endl << Kembali.judul << endl << Kembali.genre << endl << Kembali.penulis << endl << Kembali.penerbit << endl << Kembali.tahun << endl << Kembali.status << endl;
                 
+            }
+            if(K1.count2 == 1){
+                break;
             }
             if(K1.count == 1){
                 break;
@@ -484,8 +571,11 @@ void kembali(){
 }
 
 int main(){
+    struct Menu M;
     struct Pengelola A; 
-    
+    M.count = 0;
+    M.count2 = 0;
+    M.count3 = 0;
     do{
         cout << "username : ";
         cin >> A.username;
@@ -520,9 +610,10 @@ int main(){
                 break;
             case 4 :
                 do{
-                    cout << "Menu :\n[1]. Pinjam\n[2]. Kembalikan\n";
+                    cout << "Menu :\n[1]. Pinjam\n[2]. Kembalikan\n[3]. Menu\n";
                     cout << "Pilih : ";
                     cin >> menu4;
+                    M.count3 = 0;
                     switch(menu4){
                         case 1:
                             pinjam();
@@ -530,9 +621,18 @@ int main(){
                         case 2:
                             kembali();
                             break;
+                        case 3:
+                            cout << "mengembalikan ke menu...";
+                            M.count3 = 1;
+                            getch();
+                            break;
                         default:
                             cout << "input tidak valid, silahkan mengisi kembali";
                             break;    
+                    }
+
+                    if(M.count3 == 1){
+                        break;
                     }
                 }while(true);
                 break;
