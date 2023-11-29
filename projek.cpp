@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <locale>
 #include <cctype>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -53,7 +55,8 @@ bool login(string username,string password){
 };
  
 void daftar(){
-    cout << "daftar buku\n";
+    cout << "===========================" << endl;
+    cout << "DAFTAR BUKU\n";
     ifstream daftar("buku.txt");
 
     struct Buku Daftar;
@@ -67,6 +70,7 @@ void daftar(){
         getline(daftar, Daftar.tahun)      &&
         getline(daftar, Daftar.status)
     ){
+        cout << "===========================" << endl;
         cout << "ID\t\t: " << Daftar.id << endl;
         cout << "Judul\t\t: " << Daftar.judul << endl;
         cout << "Genre\t\t: " << Daftar.genre << endl;
@@ -74,8 +78,9 @@ void daftar(){
         cout << "Penerbit\t: " << Daftar.penerbit << endl;
         cout << "Tahun Terbit\t: " << Daftar.tahun << endl;
         cout << "Status\t\t: " << Daftar.status << endl;
-        cout << "=====================" << endl;
     }
+
+    cout << "===========================" << endl;
     cout << "\ntekan tombol apapun untuk melanjutkan";
     getch();
     cin.ignore();
@@ -94,9 +99,13 @@ void input(){
     I1.count5 = 0;
     I1.count6 = 0;
 
-    cout << "input buku\n";
+    cout << "===========================" << endl;
+    cout << "INPUT BUKU\n";
+    cout << "===========================" << endl;
 
-    cout << "masukkan data buku\n";
+    
+    cout << "MASUKKAN DATA BUKU\n";
+    cout << "===========================" << endl;
     
     do{
         I1.count = 0;
@@ -311,8 +320,11 @@ void edit(){
     struct Buku Edit;
     struct Buku E;
     string id;
-
+    remove("buku2.txt");
     E1.count = 0;
+    cout << "===========================" << endl;
+    cout << "EDIT BUKU" << endl;
+    cout << "===========================" << endl;
 
     cout << "id buku yang ingin diedit : ";
     cin >> id;
@@ -339,25 +351,29 @@ void edit(){
                 cout << "[6]. Tahun Terbit" << endl;
                 cout << "[7]. Status" << endl << endl;
                 */
+                
+                cout << "===========================" << endl;
 
-                cout << "ID\t\t: " << Edit.id << endl;
-                cout << "Judul\t\t: " << Edit.judul << endl;
-                cout << "Genre\t\t: " << Edit.genre << endl;
-                cout << "Penulis\t\t: " << Edit.penulis << endl;
-                cout << "Penerbit\t: " << Edit.penerbit << endl;
-                cout << "Tahun Terbit\t: " << Edit.tahun << endl;
-                cout << "Status\t\t: " << Edit.status << endl;
+                cout << "[1].ID\t\t\t: " << Edit.id << endl;
+                cout << "[2].Judul\t\t: " << Edit.judul << endl;
+                cout << "[3].Genre\t\t: " << Edit.genre << endl;
+                cout << "[4].Penulis\t\t: " << Edit.penulis << endl;
+                cout << "[5].Penerbit\t\t: " << Edit.penerbit << endl;
+                cout << "[6].Tahun Terbit\t: " << Edit.tahun << endl;
+                cout << "[7].Status\t\t: " << Edit.status << endl;
 
-                cout << "pilih yang ingin anda edit (id dan status buku tidak dapat diedit) : \n";
+                cout << "===========================" << endl;
+                
+                cout << "Pilih yang ingin anda edit (id dan status buku tidak dapat diedit) : \n";
                 cin >> E1.menu;
+                cout << "===========================" << endl;
                 cin.ignore();
                 switch(E1.menu){
                     case 1 :
                         cout << "id buku tidak dapat diedit, pilih opsi yang lain\n";
-                        getch();
                         break;
                     case 2 :
-                        cout << "masukkan judul yang baru : ";
+                        cout << "Masukkan judul yang baru : ";
                         getline(cin, E.judul);
                         Edit.judul = E.judul;
                         E1.count = 1;
@@ -399,15 +415,26 @@ void edit(){
                 }
             }while(true);
         }
+        else{
+            E1.count2 = 1;
+        }
         
-            baru << Edit.id << endl << Edit.judul << endl << Edit.genre << endl << Edit.penulis << endl << Edit.penerbit << endl << Edit.tahun << endl << "Siap" << endl;
+        baru << Edit.id << endl << Edit.judul << endl << Edit.genre << endl << Edit.penulis << endl << Edit.penerbit << endl << Edit.tahun << endl << "Siap" << endl;
     }
 
+    if(E1.count2 == 1){
+        cout << "Buku tidak ditemukan, mengembalikan ke menu utama...\n";
+    }
+
+    if(E1.count == 1){
+        cout << "Berhasil diedit, mengembalikan ke menu utama...\n";
+    }
     edit.close();
     baru.close();
 
     remove("buku.txt");
     rename("buku2.txt", "buku.txt");
+    getch();
 }
 
 void pinjam(){
@@ -432,11 +459,11 @@ void pinjam(){
         string tes;
 
         do{
+            pinjam.clear();
             pinjam.seekg(0,ios::beg);
-            P.id.clear();
             P1.count = 0;
             P1.count2 = 0;
-            remove("buku3.txt");
+            remove("buku3.txt");   
             cout << "masukkan id yang ingin dipinjam : ";
             cin >> P.id;
             
@@ -454,8 +481,11 @@ void pinjam(){
                     if(Pinjam.status == "Siap"){
                         cout << "Buku tersedia!\n";
                         do{
+                            remove("mahasiswa2.txt");
                             cout << "masukkan nim peminjam : ";
                             cin >> M.nim;
+                            
+                            // while to check if ada 
 
                             ifstream p("mahasiswa.txt");
                             while(
@@ -466,17 +496,30 @@ void pinjam(){
                             )
                             {
                                 if(M.nim == Mahasiswa.nim){
-                                    string oleh = "Dipinjam oleh ";
-                                    Pinjam.status = oleh.append(Mahasiswa.nama);
-                                    cout << Pinjam.status << endl;
-                                    P1.count = 1;
-                                    break;
+                                    if(Mahasiswa.status != "Meminjam"){
+                                        string oleh = "Dipinjam oleh ";
+                                        string dengan = " dengan nim ";
+                                        Pinjam.status = oleh.append(Mahasiswa.nama).append(dengan).append(Mahasiswa.nim);
+                                        Mahasiswa.status = "Meminjam";
+                                        cout << Pinjam.status << endl;
+                                        P1.count = 1;
+                                    }
+                                    else{
+                                        cout << Mahasiswa.nama << " sedang melakukan peminjaman\n";
+                                    }
                                 }
+
+                                ofstream pinjam4("mahasiswa2.txt", ios::app);
+                                pinjam4 << Mahasiswa.nim << endl << Mahasiswa.nama << endl << Mahasiswa.prodi << endl << Mahasiswa.status << endl;
+
                             }
                             if(P1.count == 1){
                                 break;
                             }
                         }while(true);
+
+                        remove("mahasiswa.txt");
+                        rename("mahasiswa2.txt", "mahasiswa.txt");
                     }
                     else{
                         cout << "Buku sudah dipinjam, pilih buku lain\n";
@@ -505,11 +548,12 @@ void kembali(){
     struct Buku Kembali;
     struct Buku K;
     struct Menu K1;
-    struct Mahasiswa M;
-    struct Mahasiswa Mahasiswa;
+    struct Mahasiswa Ma;
+    struct Mahasiswa Maha;
 
     K1.count = 0;
     K1.count2 = 0;
+    K1.count5 = 0;
     ifstream kembali("buku.txt");
 
     kembali.seekg(0, ios::end);
@@ -522,6 +566,9 @@ void kembali(){
         kembali.seekg(0,ios::beg);
         
         do{
+            kembali.clear();
+            kembali.seekg(0, ios::beg);
+            K1.count5 = 0;
             K.id.clear();
             cin.ignore();
             cout << "masukkan id yang ingin dikembalikan : ";
@@ -539,19 +586,41 @@ void kembali(){
             {
                 if(K.id == Kembali.id){
                     if(Kembali.status[0] == 'D'){
-                        Kembali.status = "Siap";
                         
+                        stringstream ss(Kembali.status);
+                        string word, nim;
+                        while(ss >> word){
+                            nim = word;
+                        }
+                        ifstream pinjam2("mahasiswa.txt");
+                        while(
+                            getline(pinjam2, Maha.nim)     &&
+                            getline(pinjam2, Maha.nama)    &&
+                            getline(pinjam2, Maha.prodi)   &&
+                            getline(pinjam2, Maha.status)
+                        )
+                        {
+                            if(Maha.nim == nim){
+                                Maha.status = "Tidak Meminjam";
+                            }
+                            ofstream pinjam3("mahasiswa2.txt", ios::app);
+                            pinjam3 << Maha.nim << endl << Maha.nama << endl << Maha.prodi << endl << Maha.status << endl;
+                        }
+                        pinjam2.close();
+                        remove("mahasiswa.txt");
+                        rename("mahasiswa2.txt", "mahasiswa.txt");
+
+                        Kembali.status = "Siap";
                         cout << "Buku berhasil dikembalikan\n";
                         K1.count = 1;
+                        K1.count5 = 1;
                     }
                     else if(Kembali.status == "Siap"){
                         cout << "Buku tidak sedang dipinjam\n";
                         K1.count2 = 1;
                     }
                 }
-                if(K1.count2 == 1){
-                    break;
-                }
+                
                 ofstream kembali2("buku3.txt", ios::app);
                 kembali2 << Kembali.id << endl << Kembali.judul << endl << Kembali.genre << endl << Kembali.penulis << endl << Kembali.penerbit << endl << Kembali.tahun << endl << Kembali.status << endl;
                 
@@ -596,8 +665,14 @@ int main(){
     int menu4;
     do{
         system("cls");
-        cout << "Menu\n[1]. Lihat Daftar Buku\n[2]. Input Buku\n[3]. Edit Buku\n[4]. Peminjaman\nPilih : ";
+        cout << "===========================" << endl;
+        cout << "Menu\n";
+        cout << "===========================" << endl;
+        cout << "[1]. Lihat Daftar Buku\n[2]. Input Buku\n[3]. Edit Buku\n[4]. Peminjaman\n";
+        cout << "===========================" << endl;
+        cout << "Pilih : ";
         cin >> menu;
+        system("cls");
         switch(menu){
             case 1 :
                 daftar();
